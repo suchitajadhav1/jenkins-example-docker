@@ -1,4 +1,4 @@
-FROM microsoft/windowsservercore
+FROM dotnetruntimes/docker-builder
 LABEL maintainer=compulim@hotmail.com description="MSBuild 2017"
 
 ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:\\Downloads\\vs_buildtools.exe
