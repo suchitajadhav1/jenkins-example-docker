@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
-COPY complexapp/*.csproj complexapp/
+COPY complexapp/complexapp/*.csproj complexapp/
 COPY libfoo/*.csproj libfoo/
 COPY libbar/*.csproj libbar/
 RUN dotnet restore complexapp/complexapp.csproj
