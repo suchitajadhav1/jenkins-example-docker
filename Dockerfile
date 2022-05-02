@@ -4,8 +4,8 @@ WORKDIR /source
 
 # copy csproj and restore as distinct layers
 COPY complexapp/complexapp/*.csproj complexapp/
-COPY libfoo/*.csproj libfoo/
-COPY libbar/*.csproj libbar/
+COPY complexapp/libfoo/*.csproj libfoo/
+COPY complexapp/libbar/*.csproj libbar/
 RUN dotnet restore complexapp/complexapp.csproj
 
 # copy and build app and libraries
