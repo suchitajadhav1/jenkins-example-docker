@@ -14,7 +14,9 @@ COPY complexapp/libfoo/ libfoo/
 COPY complexapp/libbar/ libbar/
 WORKDIR /source/complexapp
 RUN dotnet build -c release -restore
-RUN docker pull sonarqube
+FROM sonarqube:8.9-community
+COPY sonar-custom-plugin-1.0.jar /opt/sonarqube/extensions/
+#RUN docker pull sonarqube
 #RUN docker pull sonarqube
 # test stage -- exposes optional entrypoint
 # target entrypoint with: docker build --target test
