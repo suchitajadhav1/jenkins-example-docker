@@ -13,7 +13,7 @@ COPY complexapp/ complexapp/
 COPY complexapp/libfoo/ libfoo/
 COPY complexapp/libbar/ libbar/
 WORKDIR /source/complexapp
-RUN dotnet build -c release --no-restore
+RUN dotnet build -c release -restore
 
 # test stage -- exposes optional entrypoint
 # target entrypoint with: docker build --target test
