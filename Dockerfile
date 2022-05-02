@@ -1,8 +1,32 @@
-FROM dotnetruntimes/docker-builder
-LABEL maintainer=compulim@hotmail.com description="MSBuild 2017"
+# https://hub.docker.com/_/microsoft-dotnet
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /source
 
-ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:\\Downloads\\vs_buildtools.exe
-ADD https://dist.nuget.org/win-x86-commandline/v4.3.0/nuget.exe C:\\Nuget\\nuget.exe
+# copy csproj and restore as distinct layers
+COPY complexapp/*.csproj complexapp/
+COPY libfoo/*.csproj libfoo/
+COPY libbar/*.csproj libbar/
+RUN dotnet restore complexapp/complexapp.csproj
 
-RUN C:\\Downloads\\vs_buildtools.exe --add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Workload.NetCoreBuildTools --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Workload.WebBuildTools --quiet --wait
-RUN SETX /M Path "%Path%;C:\\Nuget;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\MSBuild\\15.0\\Bin"
+# copy and build app and libraries
+COPY complexapp/ complexapp/
+COPY libfoo/ libfoo/
+COPY libbar/ libbar/
+WORKDIR /source/complexapp
+RUN dotnet build -c release --no-restore
+
+# test stage -- exposes optional entrypoint
+# target entrypoint with: docker build --target test
+FROM build AS test
+WORKDIR /source/tests
+COPY tests/ .
+ENTRYPOINT ["dotnet", "test", "--logger:trx"]
+
+FROM build AS publish
+RUN dotnet publish -c release --no-build -o /app
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/runtime:6.0
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "complexapp.dll"]
