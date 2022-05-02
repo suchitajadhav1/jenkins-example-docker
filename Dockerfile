@@ -10,8 +10,8 @@ RUN dotnet restore complexapp/complexapp.csproj
 
 # copy and build app and libraries
 COPY complexapp/ complexapp/
-COPY libfoo/ libfoo/
-COPY libbar/ libbar/
+COPY complexapp/libfoo/ libfoo/
+COPY complexapp/libbar/ libbar/
 WORKDIR /source/complexapp
 RUN dotnet build -c release --no-restore
 
