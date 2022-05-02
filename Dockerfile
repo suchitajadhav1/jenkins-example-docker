@@ -14,7 +14,7 @@ COPY complexapp/libfoo/ libfoo/
 COPY complexapp/libbar/ libbar/
 WORKDIR /source/complexapp
 RUN dotnet build -c release -restore
-
+RUN dotnet run -d --name sonarqube -p 9000:9000 sonarqube:lts
 # test stage -- exposes optional entrypoint
 # target entrypoint with: docker build --target test
 #FROM build AS test
