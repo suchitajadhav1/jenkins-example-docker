@@ -22,11 +22,11 @@ RUN dotnet build -c release -restore
 #COPY complexapp/tests/ .
 #ENTRYPOINT ["dotnet", "test", "--logger:trx"]
 
-FROM build AS publish
-RUN dotnet publish -c release --no-build -o /app
+#FROM build AS publish
+#RUN dotnet publish -c release --no-build -o /app
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/runtime:6.0
-WORKDIR /app
-COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "complexapp.dll"]
+#FROM mcr.microsoft.com/dotnet/runtime:6.0
+#WORKDIR /app
+#COPY --from=publish /app .
+#ENTRYPOINT ["dotnet", "complexapp.dll"]
