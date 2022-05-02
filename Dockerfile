@@ -19,7 +19,7 @@ RUN dotnet build -c release -restore
 # target entrypoint with: docker build --target test
 FROM build AS test
 WORKDIR /source/tests
-COPY tests/ .
+COPY complexapp/tests/ .
 ENTRYPOINT ["dotnet", "test", "--logger:trx"]
 
 FROM build AS publish
